@@ -37,9 +37,6 @@ void HyperDenoise<HyperRep>::hyperDenoise(HyperRep & _hyper, IplImage * _output)
     HyperEdge  edge;// = new HyperEdge();
     HyperEdge  ng  ;// = new HyperEdge();
     for(unsigned int i = 0; i < nh->size(); i++){
-        //std::cout<<"[hyperdenoise] denoise loop enter"<<std::endl;
-        //HyperEdge aux(nh->at(i));//=
-        //_hyper.openNeighborhood((long)0);
         if(true){
             ImgNeighbourKernel::neighbors(nh->at(i), _hyper.getImageSize(), &edge);
             ng = _hyper.neighborHyperEdgeSets( edge);//, ng);
@@ -55,14 +52,10 @@ void HyperDenoise<HyperRep>::hyperDenoise(HyperRep & _hyper, IplImage * _output)
         }
         //*/
         _hyper.neighborsValues( ng, values);
-        //std::vector<double>  values = HyperRep::neighborsValues(_img, ng);
-        //Utils::sort(*values);
-        //std::cout<< values->at((int)values->size()/2).val[0]<<" :: "<<cvGet2D(_hyper.getImage(), pos.x, pos.y)<<" :: "<<(int)Utils::mean(*values).val[0]<<" :: "<<*values<<std::endl;
         cvSet2D(_output, pos.x, pos.y, cvScalar((int)Utils::mean(*values).val[0]));
         values->clear();
         ng.clear();
         edge.clear();
-        //std::cout<<"\n"<<i<<std::endl;
     }
     std::cout<<"Hyper denoising finish."<<std::endl;
     delete nh;
@@ -94,21 +87,13 @@ double HyperDenoise<HyperRep>::compute_PSNR(const IplImage* _im1,const  IplImage
 template<class HyperRep>
 bool HyperDenoise<HyperRep>::openTest(const HyperRep & _hyper, HyperEdge * _ng, long  _x)
 {
-    //HyperEdge aux = HyperEdge(_ng->at(_x));
     long k = _ng->at(_x);
     HyperEdge on = _hyper.openNeighborhood(k);
-    //for(unsigned long i = 0; i<_ng->size(); i++){
-    //    if(_ng->setContains(on.at(i))){
-    //        return true;
-    //    }
-    //}
     for(long i = 0; i < on.size(); i++){
         if(on.at(i)!=_x && _hyper.at(on.at(i)).size() == 1){
-            //delete on;
             return true;
         }
     }
-    //delete on;
     return false;
 }
 
@@ -117,29 +102,20 @@ HyperEdge* HyperDenoise<HyperRep>::noisyHyperEdges(HyperRep & _hyper)
 {
     HyperEdge* nh = new HyperEdge();
     HyperEdge* is = new HyperEdge();
-    //const std::vector<HyperEdge> & hyper = _hyper.getHyper();
 
     // Determination of isolated hyperedges of Hyper
     for(unsigned long i = 0; i<_hyper.getImageSize().x; i++){
         for(unsigned long j = 0; j<_hyper.getImageSize().y; j++){
 
-            //std::cout<<i<<", "<<j<<std::endl;
             HyperEdge ex = _hyper.at(i*_hyper.getImageSize().y + j);
-            //std::cout<<"ex  "<<ex.toString()<<std::endl;
             HyperEdge ep = _hyper.neighborHyperEdgeSets( ex);
-            //std::cout<<"ep  "<<ep.toString()<<std::endl;
             if(ep == ex){
-                //std::cout<<"equal "<<i*_hyper.getImageSize().y + j<<std::endl;
                 is->add(i*_hyper.getImageSize().y + j);
             }
-            //std::cout<<"size is "<<is->size()<<std::endl;
         }
     }
     std::cout<<"IS completed.  "<<is->size()<<std::endl;
     // Detection of noise hyperedges
-
-    //Point2Di ngi  ;
-    //HyperEdge aux;
     for(unsigned long i = 0; i<is->size(); i++){
         CvPoint ngi  = Utils::numToCoord(is->at(i), _hyper.getImageSize().y);
         HyperEdge aux  = _hyper.at(ngi.x*_hyper.getImageSize().y + ngi.y);
