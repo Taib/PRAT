@@ -1,0 +1,5 @@
+/home/tramx/M2IMA/PRAT/cpp_cmake/build/CMakeFiles/pixel_denoise.dir
+/home/tramx/M2IMA/PRAT/cpp_cmake/build/CMakeFiles/pixel_morpho.dir
+/home/tramx/M2IMA/PRAT/cpp_cmake/build/CMakeFiles/pixel_segmentation.dir
+/home/tramx/M2IMA/PRAT/cpp_cmake/build/CMakeFiles/region_morpho.dir
+/home/tramx/M2IMA/PRAT/cpp_cmake/build/CMakeFiles/region_segmentation.dir
