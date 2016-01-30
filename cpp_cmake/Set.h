@@ -9,6 +9,10 @@ namespace Hyper{
 template <class T>
 class Set
 {
+  /* This class provides basic set operation function.
+   * Note : A set do not contain duplication.
+   * Here, a set is a vector of elements.
+   */
 public:
     typedef T ValueType;
     inline Set(){data.clear();}

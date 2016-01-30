@@ -1,57 +1,31 @@
 #ifndef SLIC_HYPER_H
 #define SLIC_HYPER_H
-
+// method for normalysing histology analyse
 #include "SLIC.h"
 #include "Utils.h"
-#include <fstream>
 #include "HyperGraph.h"
 namespace Hyper {
-  /**
-   * We provide in this file, a class to build a region based image hypergraph.
-   * The regions are computed from the SLIC algorithm, implemented by [Pascal Mettes].
-   *
-   * This file contains two classes : 
-   *        - SuperPixel : to handle a superpixel operations
-   *        - NRIH       : that implements a region based image hypergraph
-   */
 
 class SuperPixel :public Set<long>{
-  /*
-   * Here, we implement a superpixel as a set of pixels indices.
-   * Note: The index of a pixel is computed given its (x,y) coordinates and the width of the image.
-   *       The index of the pixel at position (a,b) in the image of size NxM is an integer Index(a,b)=axM + b.
-   *
-   */
 protected:
-  // values of the pixels belonging to this superpixel
-  std::vector<CvScalar> values;
-  // the mean of the intensity value in the superpixel
-  CvScalar mean;
-  // the standard deviation of the intensity value in the superpixel
-  CvScalar std_dev;
-  // the position (x,y) of the center of the superpixel
-  CvPoint position;
+    std::vector<CvScalar> values;
+    CvScalar mean;
+    CvScalar std_dev;
+    CvPoint position;
 public:
-  // constructors
-  SuperPixel(){}
-  SuperPixel(Set<long> _pixels, std::vector<CvScalar> _values){
-    this->data = _pixels.getDataCopy(); values = _values;
-  }
-  // getters
-  CvScalar getMeanValue() const{return mean;}
-  CvScalar getStdvalue() const{return std_dev;}
-  CvPoint getPosition() const{return position;}
-  CvScalar getMeanValue(){return mean;}
-  CvScalar getStdvalue(){return std_dev;}
-  CvPoint getPosition(){return position;}
-  std::vector<CvScalar> getValues(){return values;}
-  // setters
-  void setPosition(CvPoint _pos){position = _pos;}
-  // after the assigment of pixels to a superpixel, this function store the values of the pixels in the superpixel
-  void setValues(const IplImage * _img);
-  // deprecated :  should compute the dot product of two superpixel with different sizes
-  static CvScalar dotProduct(SuperPixel _sp1, SuperPixel _sp2);
-  //void add(long _pixel, CvScalar _value){data.add(_pixel); values.push_back(_value);}
+    SuperPixel(){}
+    SuperPixel(Set<long> _pixels, std::vector<CvScalar> _values){this->data = _pixels.getDataCopy(); values = _values;}
+    CvScalar getMeanValue() const{return mean;}
+    CvScalar getStdvalue() const{return std_dev;}
+    CvPoint getPosition() const{return position;}
+    CvScalar getMeanValue(){return mean;}
+    CvScalar getStdvalue(){return std_dev;}
+    CvPoint getPosition(){return position;}
+    std::vector<CvScalar> getValues(){return values;}
+    void setPosition(CvPoint _pos){position = _pos;}
+    void setValues(const IplImage * _img);
+    static CvScalar dotProduct(SuperPixel _sp1, SuperPixel _sp2);
+    //void add(long _pixel, CvScalar _value){data.add(_pixel); values.push_back(_value);}
 };
 
 void SuperPixel::setValues(const IplImage* _img){
@@ -63,7 +37,6 @@ void SuperPixel::setValues(const IplImage* _img){
     std_dev = Utils::standardDeviation(values);
 }
 
-// deprecated
 CvScalar SuperPixel::dotProduct(SuperPixel _sp1, SuperPixel _sp2){
     int tour                    = std::max(_sp1.size(), _sp2.size()) - std::min(_sp1.size(), _sp2.size());
     CvScalar result             = cvScalarAll(99999999.0);
@@ -93,62 +66,35 @@ CvScalar SuperPixel::dotProduct(SuperPixel _sp1, SuperPixel _sp2){
 
 template <class ImageNeighborhoodKernel>
 class NRIH : public HyperGraph{
-  /*
-   * The class NRIH (Naive Region-based Image Hypergraph) needs a kernel to compute the neighbors of a superpixel. 
-   *In this version, the kernel is not really used, instead the number of neighbor is given in the constructor of the class.
-   *
-   */
 public:
 
     inline NRIH(){}
-    /*
-     * method : NRIH constructor
-     * params : 
-     *     _nbr_superpixels   : the maximal number of superpixel computed by the SLIC algorithm
-     *     _nc                : the weight factor used by the SLIC algorithm
-     *     _fname             : the image path
-     *     _kNearestNeighbors : the number of neighbor of a superpixel to be considered in the hyperedge computation. 
-     */
     NRIH(int _nbr_superpixels, int _nc, char*_fname, int _kNearestNeighbors);
     inline ~NRIH(){cvReleaseImage(&image);}
-    
-    // basic method from the class HyperGraph : computes the hypergraph of the image
+    ///
+    /// \brief SLIC_Hyper
+    /// \param _nbr_superpixels : number of superpixels
+    /// \param _nc              : weight-factors
+    ///
+
     void compute_hyper();
-    
-    // getters
+
     inline CvPoint getImageSize(){return imSize;}
     inline CvPoint getImageSize() const {return imSize;}
     inline const SuperPixel& getSuperPixel(long _id){return superPixels.at(_id);}
-
-    // return a hyperedge neighbors values 
     std::vector<CvScalar> neighborsValues(const HyperEdge & ng);
     void neighborsValues(const HyperEdge & ng, std::vector<CvScalar>* _output) const;
     std::vector<CvScalar> neighborsValues(const HyperEdge & ng)const;
     void neighborsValues(const HyperEdge & ng, std::vector<CvScalar>* _output);
-
-
-    
-    // Creates a file "_outName" that contains the weighted image hypergraph. 
-    // Here only the vertices(superpixel) are weighted (with their mean intensity values).
-    // The output file "_outName" can be an input of the hMetis hypergraph partitioning tool. 
     void toWeightedFile(const char * _outName);
-
-    // show the superpixel given its index "_i" in the image
     void showSuperPixelNeighbors(int _i);
-    
-    // actually this function should be called "setSuperPixelValue".
-    // it affect a given value to all pixels in the given hyperedge index
     void setPixelValue(long _hyperEdgeId, CvScalar _value);
-
-    // get/set superpixels
     inline void setSuperPixels(std::vector<SuperPixel> _spixels){superPixels =_spixels;}
     inline std::vector<SuperPixel> getSuperPixels(){return superPixels;}
-    // clone the current class
     NRIH<ImageNeighborhoodKernel>* clone();
-    // get/set the image
     inline void setImage(const IplImage* _img){image = cvCloneImage(_img); imSize = cvPoint(image->height, image->width);}
     inline const IplImage* getImage(){return image;}
-    // return an image containing the superpixels
+
     inline IplImage* getContoursImage(){return contourImage;}
 
 private:
@@ -166,7 +112,7 @@ private:
 
 };
 /////////////////////////////////////////Implementation/////////////////////////////////////////////////////////////////////////
-///
+/// 
 ///
 
 template <class ImageNeighborhoodKernel>
@@ -207,19 +153,17 @@ void NRIH<ImageNeighborhoodKernel>::compute_hyper(){
     /* save the contours image.*/
     contourImage = cvCloneImage(lab_image);
     slic.display_contours(contourImage, CV_RGB(255,0,0));
-    // get the centers and clusters of superpixels
+
     std::vector<std::vector<double> > centers = slic.getCenters();
     std::vector<std::vector<int> > clusters = slic.getClusters();
     std::cout<<"[SLIC_Hyper] superpixels begin "<<centers.size()<<std::endl;
     superPixels = std::vector<SuperPixel>(centers.size());
-    // create the superpixels
     for(int j = 0; j < image->width ; j++){
         for(int i = 0; i < image->height; i++){
             int id = clusters[j][i];
             superPixels[id].add(i*image->width +j);
         }
     }
-    // save the superpixels' positions
     std::cout<<"[SLIC_Hyper] superpixels positioning "<<superPixels.at(0).size()<<std::endl;
     for(int i = 0; i<centers.size(); i++){
         superPixels[i].setPosition(cvPoint(centers[i][3], centers[i][4]));
@@ -227,32 +171,32 @@ void NRIH<ImageNeighborhoodKernel>::compute_hyper(){
     }
     std::cout<<"[SLIC_Hyper] superpixels computed"<<std::endl;
 
-    // dumb way to finally get their position
     std::vector<CvPoint> superPixelsPositions = getSuperPixelsPositions();
-    // for each superpixel
     for(int i = 0; i< superPixels.size(); i++){
-      // compute its neighbors : k nearest neighbor fashion.
-      std::vector<std::pair<double, int> > ng = Utils::knn(superPixelsPositions, superPixels.at(i).getPosition());
-      // compute its mean intesity value
-      std::vector<double> means;
-      for(int j = 0; j< ng.size(); j++){
-	means.push_back(superPixels.at(ng.at(j).second).getMeanValue().val[0]);
-      }
-      // compute the standard deviation
-      std::vector<double> stds;
-      for(int j = 0; j< ng.size(); j++){
-	stds.push_back(superPixels.at(ng.at(j).second).getStdvalue().val[0]);
-      }
-      // compute the standard deviation of the mean intensity values
-      double alpha    = Utils::standardDeviation(means);
-      // hyperedge construction
-      HyperEdge gamma;
-      for(int j = 0; j< ng.size(); j++ ){
-	if(Utils::abs<double>(superPixels.at(ng.at(0).second).getMeanValue().val[0] - superPixels.at(ng.at(j).second).getMeanValue().val[0])<=alpha)
-	  gamma.add(ng.at(j).second);
-      }
-      this->hyper.push_back(gamma);
+        std::vector<std::pair<double, int> > ng = Utils::knn(superPixelsPositions, superPixels.at(i).getPosition());
+        std::vector<double> means;
+        for(int j = 0; j< ng.size(); j++){
+            means.push_back(superPixels.at(ng.at(j).second).getMeanValue().val[0]);
+        }
+        std::vector<double> stds;
+        for(int j = 0; j< ng.size(); j++){
+            stds.push_back(superPixels.at(ng.at(j).second).getStdvalue().val[0]);
+        }
+        //std::cout<<"[SLIC_Hyper] i : "<<i<<" ::: ng "<<ng.toString()<<std::endl;
+        double alpha    = Utils::standardDeviation(means);
+        HyperEdge gamma;
+        for(int j = 0; j< ng.size(); j++ ){
+            if(Utils::abs<double>(superPixels.at(ng.at(0).second).getMeanValue().val[0] - superPixels.at(ng.at(j).second).getMeanValue().val[0])<=alpha)
+                gamma.add(ng.at(j).second);
+        }
+        this->hyper.push_back(gamma);
     }
+
+
+    //std::cout<<"[SLIC_Hyper] drawing"<<std::endl;
+    //cvShowImage("result", lab_image);
+    //cvWaitKey(0);
+
 }
 
 template <class ImageNeighborhoodKernel>
@@ -277,11 +221,13 @@ void NRIH<ImageNeighborhoodKernel>::showSuperPixelNeighbors(int _id){
     }
     for(int i = 1; i<ng.size(); i++){
         SuperPixel sp = superPixels.at(ng.at(i).second);
+        //std::cout<<"i :: "<<i<<"   "<<ng.at(i).second<<std::endl;
         for(int j = 0; j<sp.size(); j++){
             CvPoint pos = Utils::numToCoord(sp.at(j), aux->width);
             cvSet2D(aux,pos.x, pos.y, cvScalar(0));//sp.getMeanValue().val[0]));
         }
     }
+    //std::cout<<"[ShowSuperPixel] ng  "<<ng.size()<<std::endl;
     cvShowImage("showSuperPixel", aux);
     cvWaitKey(0);
 }

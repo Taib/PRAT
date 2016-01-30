@@ -10,6 +10,14 @@ namespace Hyper {
 
 #define Hyper_Kmeans_Iteration 10
 
+  /* This file contains standard functions used in the whole project. 
+   * Basically, functions for "mean", "standard deviation", "sort", ...
+   *
+   * One of the important function is "numToCoord" that transforms an integer (pixel index)
+   * to a (x, y) coordinate given the width of the image.
+   */
+
+
 inline CvScalar operator- (CvScalar _sc1, CvScalar _sc2){
     return cvScalar(_sc1.val[0] - _sc2.val[0],_sc1.val[1] - _sc2.val[1],_sc1.val[2] - _sc2.val[2],_sc1.val[3] - _sc2.val[3]);
 }
@@ -56,7 +64,6 @@ void printTo(std::ostream & _output, T _begin, T _end){
 
 void showImages(std::vector<const IplImage *> images, std::vector<std::string> names){
     for(int i = 0; i < images.size(); i++){
-        //cv::namedWindow( names[i].data(), cv::WINDOW_NORMAL );
         cvNamedWindow(names[i].data(), CV_WINDOW_FREERATIO);
         cvShowImage(names[i].data(), images.at(i) );
     }

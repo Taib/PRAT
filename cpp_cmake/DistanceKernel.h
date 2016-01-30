@@ -2,20 +2,25 @@
 #define DISTANCEKERNEL_H
 #include <iostream>
 
+
+
+
 // Note that all distance class must have a static method "distance"
 // which takes at least 2 arguments
 
 namespace Hyper {
 
 namespace PixelDistanceKernel {
+  // This namespace contains distance methods. They are essentially used to compute the distance between vertices of a hypergraph
     enum DistanceType {BoolFashion = 0, StdFashion = 1};
     class AbsDistance1D {
     public:
+      // Absolute distance
       inline static int distance(int _a, int _b){
           return (_a - _b)>=0 ? (_a-_b):(-_a+_b); // abs
       }
     };
-
+    // Euclidian distance
     class EuclidianDistance1D {
     public:
       inline static float distance(float _a, float _b){

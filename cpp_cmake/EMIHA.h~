@@ -28,7 +28,7 @@ public:
 
 template<class ImageNeighboursKernel , class PixelsDistanceKernel >
 EMIHA<ImageNeighboursKernel , PixelsDistanceKernel >::EMIHA(const IplImage * _img){
-    throw "EMIHA not implemented";
+    throw("EMIHA not implemented");
     compute_hyper(_img);
 }
 

@@ -4,7 +4,10 @@
 #include <vector>
 #include "Utils.h"
 /***
- * HyperGraph : Abstract class which contains basic methods to build a hypergraph
+ * We define in this file the following element : 
+ * HyperGraphAbstract : Abstract class which contains basic methods to build a hypergraph
+ * HyperEdge         : is a set of integers
+ * HyperGraph       : is also an abstract class but implements some basic methods
  */
 namespace Hyper{
 
@@ -41,6 +44,9 @@ typedef Set<long> HyperEdge;
 //////////// HyperGraph definition
 class HyperGraph //: public HyperGraphAbstract<HyperEdge>
 {
+  /* We define here a hypergraph as a vector of HyperEdge.
+   * Basically, the HyperGraph class provides the main operations needed on a usual hypergraph : add ahyperedge, get the size,...
+   */
 protected:
     std::vector<HyperEdge> hyper;
 public:
@@ -67,7 +73,8 @@ public:
     HyperEdge openNeighborhood(long & _edgeIndex) ;
     HyperEdge openNeighborhood(HyperEdge & _ng) const;
     HyperEdge openNeighborhood(HyperEdge & _ng) ;
-
+    
+    // Abstract methods
     virtual void setPixelValue(long _hyperEdgeId, CvScalar _value) = 0;
     virtual HyperGraph * clone() = 0;
 };

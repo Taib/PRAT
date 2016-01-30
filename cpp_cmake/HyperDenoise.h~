@@ -69,6 +69,7 @@ void HyperDenoise<HyperRep>::hyperDenoise(HyperRep & _hyper, IplImage * _output)
       ng.remove(ng.indexOf(nh->at(i)));
       CvPoint pos  = Utils::numToCoord(nh->at(i), _hyper.getImageSize().y);
       /// May be good to consider only different neighbours
+      /**/
       for(int j = 0; j < ng.size(); j++){
 	CvPoint pos_aux  = Utils::numToCoord(ng.at(j), _hyper.getImageSize().y);
 	if(cvGet2D(_hyper.getImage(), pos_aux.x, pos_aux.y).val[0] == cvGet2D(_hyper.getImage(), pos.x, pos.y).val[0])
