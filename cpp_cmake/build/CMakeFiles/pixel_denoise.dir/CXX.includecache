@@ -11,13 +11,15 @@ iostream
 -
 
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperDenoise.h
-IANH.h
-/home/tramx/M2IMA/PRAT/cpp_cmake/IANH.h
+PixelHyperGraph.h
+/home/tramx/M2IMA/PRAT/cpp_cmake/PixelHyperGraph.h
 
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperGraph.h
 iostream
 -
 vector
+-
+fstream
 -
 Utils.h
 /home/tramx/M2IMA/PRAT/cpp_cmake/Utils.h

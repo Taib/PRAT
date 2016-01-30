@@ -39,7 +39,7 @@ void morphology(IplImage * _image){
   ImageHyper erode1 ;
   erode1.setImage(cvCreateImage(cvSize(_image->width,_image->height), IPL_DEPTH_8U, 1));
   // perform the erosion per se
-  Hyper::HyperMorpho<ImageHyper>::hyxperErode(hyper, erode1 , Hyper::StructElement());
+  Hyper::HyperMorpho<ImageHyper>::hyperErode(hyper, erode1 , Hyper::StructElement());
 
   // ImageHyper * erode2 = erode1->clone();
   //Hyper::HyperMorpho<ImageHyper>::hyperErode(*erode1, *erode2, Hyper::StructElement());
@@ -119,7 +119,7 @@ int main( int argc, char** argv )
   //morphology<NLIH>(image);
 
 
-  cvReleaseImage(image);
+  cvReleaseImage(&image);
   return 0;
 }
 

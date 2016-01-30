@@ -129,6 +129,6 @@ int main( int argc, char** argv )
    segmentAfterHMETIS<IANH>(path.str().data(), kway, hyper);
 
 
-   cvRealease(image);
+   cvReleaseImage(&image);
    return 0;
 }

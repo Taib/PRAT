@@ -1,7 +1,7 @@
 #ifndef HYPERDENOISE_H
 #define HYPERDENOISE_H
 
-#include "IANH.h"
+#include "PixelHyperGraph.h"
 
 namespace Hyper{
 /**

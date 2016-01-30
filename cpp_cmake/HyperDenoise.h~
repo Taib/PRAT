@@ -64,12 +64,12 @@ void HyperDenoise<HyperRep>::hyperDenoise(HyperRep & _hyper, IplImage * _output)
     HyperEdge  edge;
     HyperEdge  ng  ;
     for(unsigned int i = 0; i < nh->size(); i++){
+<<<<<<< HEAD
       ImgNeighbourKernel::neighbors(nh->at(i), _hyper.getImageSize(), &edge);
       ng = _hyper.neighborHyperEdgeSets( edge);
       ng.remove(ng.indexOf(nh->at(i)));
       CvPoint pos  = Utils::numToCoord(nh->at(i), _hyper.getImageSize().y);
       /// May be good to consider only different neighbours
-      /**/
       for(int j = 0; j < ng.size(); j++){
 	CvPoint pos_aux  = Utils::numToCoord(ng.at(j), _hyper.getImageSize().y);
 	if(cvGet2D(_hyper.getImage(), pos_aux.x, pos_aux.y).val[0] == cvGet2D(_hyper.getImage(), pos.x, pos.y).val[0])
@@ -80,6 +80,27 @@ void HyperDenoise<HyperRep>::hyperDenoise(HyperRep & _hyper, IplImage * _output)
       values->clear();
       ng.clear();
       edge.clear();
+=======
+        if(true){
+            ImgNeighbourKernel::neighbors(nh->at(i), _hyper.getImageSize(), &edge);
+            ng = _hyper.neighborHyperEdgeSets( edge);//, ng);
+        }
+        ng.remove(ng.indexOf(nh->at(i)));
+        CvPoint pos  = Utils::numToCoord(nh->at(i), _hyper.getImageSize().y);
+        /// May be good to consider only different neighbours
+        /**/
+        for(int j = 0; j < ng.size(); j++){
+            CvPoint pos_aux  = Utils::numToCoord(ng.at(j), _hyper.getImageSize().y);
+            if(cvGet2D(_hyper.getImage(), pos_aux.x, pos_aux.y).val[0] == cvGet2D(_hyper.getImage(), pos.x, pos.y).val[0])
+                ng.remove(j);
+        }
+        //*/
+        _hyper.neighborsValues( ng, values);
+        cvSet2D(_output, pos.x, pos.y, cvScalar((int)Utils::mean(*values).val[0]));
+        values->clear();
+        ng.clear();
+        edge.clear();
+>>>>>>> 6ad2bede95950bb8fe1833ba43cb45398e3de809
     }
     std::cout<<"Hyper denoising finish."<<std::endl;
     delete nh;
@@ -111,7 +132,11 @@ double HyperDenoise<HyperRep>::compute_PSNR(const IplImage* _im1,const  IplImage
 template<class HyperRep>
 bool HyperDenoise<HyperRep>::openTest(const HyperRep & _hyper, HyperEdge * _ng, long  _x)
 {
+<<<<<<< HEAD
     long k       = _ng->at(_x);
+=======
+    long k = _ng->at(_x);
+>>>>>>> 6ad2bede95950bb8fe1833ba43cb45398e3de809
     HyperEdge on = _hyper.openNeighborhood(k);
     for(long i = 0; i < on.size(); i++){
         if(on.at(i)!=_x && _hyper.at(on.at(i)).size() == 1){

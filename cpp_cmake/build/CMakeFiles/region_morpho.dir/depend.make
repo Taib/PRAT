@@ -3,9 +3,7 @@
 
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../HyperGraph.h
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../HyperMorpho.h
-CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../IANH.h
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../ImageNeighborKernel.h
-CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../PixelHyperGraph.h
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../SLIC.h
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../SLIC_Hyper.h
 CMakeFiles/region_morpho.dir/region_morpho.cpp.o: ../Set.h

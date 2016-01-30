@@ -1,7 +1,7 @@
 #ifndef HYPERMORPHO_H
 #define HYPERMORPHO_H
 
-#include "HyperGraph.h"
+#include "IANH.h"
 
 namespace Hyper{
   /* We provide here a template class to perform morphological operations on an image hypergraph (region or pixel based).
@@ -120,17 +120,17 @@ void HyperMorpho<HyperRep>::hyperErode(const HyperRep & _input_hyper, HyperRep &
 
 template<class HyperRep>
 void HyperMorpho<HyperRep>::hyperOpen(const HyperRep & _input_hyper, HyperRep &_output_hyper, StructElement _stel){
-    hyperErode(_input_hyper, _output_hyper, _stel);
+    hyperErode(_input_hyper, _output_hyper, stel);
     HyperRep* cloning = _output_hyper.clone(); // must free after cloning (bad implementation!!!)
-    hyperDilate(*cloning, _output_hyper, _stel);
+    hyperDilate(*cloning, _output_hyper, stel);
     free(cloning);
 }
 
 template<class HyperRep>
 void HyperMorpho<HyperRep>::hyperClose(const HyperRep & _input_hyper,HyperRep& _output_hyper, StructElement _stel){
-    hyperDilate(_input_hyper, _output_hyper, _stel);
+    hyperDilate(_input_hyper, _output_hyper, stel);
     HyperRep* cloning = _output_hyper.clone();
-    hyperErode(*cloning, _output_hyper, _stel);
+    hyperErode(*cloning, _output_hyper, stel);
     free(cloning);
 }
 

@@ -92,7 +92,7 @@ int main( int argc, char** argv )
    superpixel_morpho(argv[1]);
    
 
-   cvReleaseImage(image);
+   cvReleaseImage(&image);
    return 0;
 }
 

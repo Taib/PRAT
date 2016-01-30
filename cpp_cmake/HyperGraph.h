@@ -2,6 +2,7 @@
 #define HYPERGRAPH_H
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "Utils.h"
 /***
  * We define in this file the following element : 

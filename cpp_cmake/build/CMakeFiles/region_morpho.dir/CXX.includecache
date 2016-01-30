@@ -11,30 +11,16 @@ iostream
 -
 vector
 -
+fstream
+-
 Utils.h
 /home/tramx/M2IMA/PRAT/cpp_cmake/Utils.h
 
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperMorpho.h
-IANH.h
-/home/tramx/M2IMA/PRAT/cpp_cmake/IANH.h
-
-/home/tramx/M2IMA/PRAT/cpp_cmake/IANH.h
-fstream
--
-PixelHyperGraph.h
-/home/tramx/M2IMA/PRAT/cpp_cmake/PixelHyperGraph.h
-Utils.h
-/home/tramx/M2IMA/PRAT/cpp_cmake/Utils.h
-
-/home/tramx/M2IMA/PRAT/cpp_cmake/ImageNeighborKernel.h
 HyperGraph.h
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperGraph.h
 
-/home/tramx/M2IMA/PRAT/cpp_cmake/PixelHyperGraph.h
-iostream
--
-vector
--
+/home/tramx/M2IMA/PRAT/cpp_cmake/ImageNeighborKernel.h
 HyperGraph.h
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperGraph.h
 

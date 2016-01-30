@@ -76,7 +76,7 @@ void  denoising(IplImage * _image, IplImage* _noisy, char* _savePath){
   // Uncomment the following to save the results.
   //if(_savePath != NULL)
   //Hyper::saveImages(imgs, names, _savePath);
-  cvReleaseImage(imdenoise);
+  cvReleaseImage(&imdenoise);
 }
 
 

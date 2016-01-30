@@ -15,12 +15,14 @@ iostream
 -
 vector
 -
+fstream
+-
 Utils.h
 /home/tramx/M2IMA/PRAT/cpp_cmake/Utils.h
 
 /home/tramx/M2IMA/PRAT/cpp_cmake/HyperMorpho.h
-IANH.h
-/home/tramx/M2IMA/PRAT/cpp_cmake/IANH.h
+HyperGraph.h
+/home/tramx/M2IMA/PRAT/cpp_cmake/HyperGraph.h
 
 /home/tramx/M2IMA/PRAT/cpp_cmake/IANH.h
 fstream

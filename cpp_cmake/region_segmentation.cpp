@@ -128,6 +128,6 @@ int main( int argc, char** argv )
    segmentAfterHMETIS(path.str().data(), kway, slic);
 
 
-   cvRealease(image);
+   cvReleaseImage(&image);
    return 0;
 }
