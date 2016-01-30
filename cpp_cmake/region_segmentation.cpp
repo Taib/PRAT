@@ -83,9 +83,9 @@ void segmentAfterHMETIS(const char* _segmentFile,int _kway, NRIH& _slic ){
   cvWaitKey(0);
 
   // uncomment the following to save the segmentation result
-  // std::string path = segmentFile;
+  // std::string path = _segmentFile;
   // path.append(".jpg");
-  // cvSaveImage(path, segmentation);
+  // cvSaveImage(path.data, segmentation);
   //*/
   
 }
