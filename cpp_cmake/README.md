@@ -10,8 +10,8 @@ The following methods are provided :
 - Image hypergraph segmentation based on the paper "Weighted adaptive neighborhood hypergraph partitioning for image segmentation" by S.Rital et al. Their method uses the hypergraph partitioning tool "hMetis" provided by G.Karypis et al.
 
 
-> **Note**: The index of a pixel is computed given its (x,y) coordinates and the width of the image.
-The index of the pixel at position (a,b) in the image of size NxM is an integer  : Index(a,b)=axM + b.
+> **Note**: The index of a pixel is computed given its $(x,y)$ coordinates and the width of the image.
+The index of the pixel at position $(a,b)$ in the image of size $N\times M$ is an integer: $Index(a, b) = aM + b$.
 
 
 The basic image operation are handled thanks to OpenCv librarie. So make sure you have OpenCv installed.
